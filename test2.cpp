@@ -31,9 +31,9 @@ string execute(string cmd)
 
 int main()
 {
-    //system("C:\\msys64\\usr\\bin\\bash.exe -l -c \"curl -s http://ifconfig.me/all.json\" > resultjq.txt");
-    string xxx = execute("C:\\msys64\\usr\\bin\\bash.exe -l -c \"curl -s http://ifconfig.me/all.json\"");
-    //string yyy = execute("jq \".user_agent\" result.txt");
-    //printf("%s\n", yyy.c_str());
+    system("C:\\msys64\\usr\\bin\\bash.exe -l -c \"curl -s http://ifconfig.me/all.json\" > resultjq.txt");
+    //string xxx = execute("C:\\msys64\\usr\\bin\\bash.exe -l -c \"curl -s http://ifconfig.me/all.json\"");
+    string yyy = execute("jq \".user_agent\" resultjq.txt");
+    printf("%s\n", yyy.c_str());
     system("pause");
 }

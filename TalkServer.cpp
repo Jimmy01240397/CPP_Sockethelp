@@ -103,9 +103,7 @@ void receiveCallBack(AsyncResult ar)
         bool code = geter->BeginReceiveFrom(data, sizeof(int), 0, receiveCallBack, state);
         if(!code)
         {
-            pthread_mutex_lock(&mutex1);
-            geter->Close();
-            pthread_mutex_unlock(&mutex1);
+            LOCK(&mutex1, geter->Close(););
             free(data);
             free(state);
             exit(0);
@@ -113,9 +111,7 @@ void receiveCallBack(AsyncResult ar)
     }
     else if(bufsize == 0)
     {
-        pthread_mutex_lock(&mutex1);
-        geter->Close();
-        pthread_mutex_unlock(&mutex1);
+        LOCK(&mutex1, geter->Close(););
         free(data);
         free(state);
         exit(0);
@@ -136,9 +132,7 @@ void receiveCallBack(AsyncResult ar)
         bool code = geter->BeginReceiveFrom(data, sizeof(int), 0, receiveCallBack, state);
         if(!code)
         {
-            pthread_mutex_lock(&mutex1);
-            geter->Close();
-            pthread_mutex_unlock(&mutex1);
+            LOCK(&mutex1, geter->Close(););
             free(data);
             free(state);
             exit(0);
@@ -148,9 +142,7 @@ void receiveCallBack(AsyncResult ar)
 
 void whenexit()
 {
-    pthread_mutex_lock(&mutex1);
-    server.Close();
-    pthread_mutex_unlock(&mutex1);
+    LOCK(&mutex1, server.Close(););
     Sleep(2000);
     WSACleanup();
     pthread_mutex_destroy(&mutex1);

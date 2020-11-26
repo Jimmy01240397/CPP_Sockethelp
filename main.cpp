@@ -58,7 +58,23 @@ void receiveCallBack(AsyncResult ar)
         client->Send(sendbuf, sendbuflen, 0);
         if(!client->BeginReceive(recvbuf, DEFAULT_BUFLEN, 0, receiveCallBack, (void *)data))
         {
-            pthread_mutex_lock(&mutex1);
+            LOCK(&mutex1, 
+                client->Close();
+                for(auto i = clients.begin(); i != clients.end(); i++)
+                {
+                    if((*i) == client)
+                    {
+                        clients.erase(i);
+                        break;
+                    }
+                }
+                delete client;
+            ); 
+        }
+    }
+    else
+    {
+        LOCK(&mutex1, 
             client->Close();
             for(auto i = clients.begin(); i != clients.end(); i++)
             {
@@ -69,25 +85,8 @@ void receiveCallBack(AsyncResult ar)
                 }
             }
             delete client;
-            pthread_mutex_unlock(&mutex1);
-        }
+        ); 
     }
-    else
-    {
-        pthread_mutex_lock(&mutex1);
-        client->Close();
-        for(auto i = clients.begin(); i != clients.end(); i++)
-        {
-            if((*i) == client)
-            {
-                clients.erase(i);
-                break;
-            }
-        }
-        delete client;
-        pthread_mutex_unlock(&mutex1);
-    }
-    
 }
 void acceptCallBack(AsyncResult ar) 
 {
@@ -123,13 +122,13 @@ void acceptCallBack(AsyncResult ar)
 
 void whenexit()
 {
-    pthread_mutex_lock(&mutex1);
-    for(auto i = clients.begin(); i != clients.end(); i++)
-    {
-        ((Socket*)(*i))->Close();
-    }
-    clients.clear();
-    pthread_mutex_unlock(&mutex1);
+    LOCK(&mutex1, 
+        for(auto i = clients.begin(); i != clients.end(); i++)
+        {
+            ((Socket*)(*i))->Close();
+        }
+        clients.clear();
+    ); 
     ListenServer.Close();
     Sleep(3000);
     WSACleanup();

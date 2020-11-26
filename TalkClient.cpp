@@ -52,9 +52,7 @@ void receiveCallBack(AsyncResult ar)
         bool code = geter->BeginReceiveFrom(data, sizeof(int), 0, receiveCallBack, state);
         if(!code)
         {
-            pthread_mutex_lock(&mutex1);
-            geter->Close();
-            pthread_mutex_unlock(&mutex1);
+            LOCK(&mutex1, geter->Close(););
             free(data);
             free(state);
             exit(0);
@@ -62,9 +60,7 @@ void receiveCallBack(AsyncResult ar)
     }
     else
     {
-        pthread_mutex_lock(&mutex1);
-        geter->Close();
-        pthread_mutex_unlock(&mutex1);
+        LOCK(&mutex1, geter->Close(););
         free(data);
         free(state);
         exit(0);
@@ -73,15 +69,13 @@ void receiveCallBack(AsyncResult ar)
 
 void whenexit()
 {
-    pthread_mutex_lock(&mutex1);
-
-    byte * writedata = (byte*)((char*)"exit");
-    int len = 4;
-    client.SendTo("127.0.0.1", 24444, (byte*)&len, sizeof(int), 0);
-    client.SendTo("127.0.0.1", 24444, writedata, len, 0);
-
-    client.Close();
-    pthread_mutex_unlock(&mutex1);
+    LOCK(&mutex1, 
+        byte * writedata = (byte*)((char*)"exit");
+        int len = 4;
+        client.SendTo("127.0.0.1", 24444, (byte*)&len, sizeof(int), 0);
+        client.SendTo("127.0.0.1", 24444, writedata, len, 0);
+        client.Close();
+    );
 
     Sleep(1000);
 

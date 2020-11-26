@@ -42,9 +42,7 @@ void receiveCallBack(AsyncResult ar)
         bool code = geter->BeginReceive(data, DEFAULT_BUFLEN, 0, receiveCallBack, state);
         if(!code)
         {
-            pthread_mutex_lock(&mutex1);
-            geter->Close();
-            pthread_mutex_unlock(&mutex1);
+            LOCK(&mutex1, geter->Close(););
             free(data);
             free(state);
             exit(0);
@@ -52,9 +50,7 @@ void receiveCallBack(AsyncResult ar)
     }
     else
     {
-        pthread_mutex_lock(&mutex1);
-        geter->Close();
-        pthread_mutex_unlock(&mutex1);
+        LOCK(&mutex1, geter->Close(););
         free(data);
         free(state);
         exit(0);
@@ -65,9 +61,7 @@ Socket client;
 
 void whenexit()
 {
-    pthread_mutex_lock(&mutex1);
-    client.Close();
-    pthread_mutex_unlock(&mutex1);
+    LOCK(&mutex1, client.Close(););
 
     Sleep(1000);
 

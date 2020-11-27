@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/user/Documents/Projects/Talking/Server/build/test2.cpp
+iostream
+-
+list
+-
+string
+-
+algorithm
+-
+stdio.h
+-
+stdlib.h
+-
+process.h
+-
+windows.h
+-
+fstream
+-
+json/json.h
+-
+

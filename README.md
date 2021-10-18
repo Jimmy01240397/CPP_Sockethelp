@@ -4,7 +4,7 @@ A C++ Socket for class.
 ## Usage
 use it with.
 ``` C++
-inclube "sockethelp.h"
+#inclube "sockethelp.h"
 ```
 
 for windows pls enable WSA first
